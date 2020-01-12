@@ -1,6 +1,6 @@
 package me.carlosehr.ppmtool.services;
 
-import me.carlosehr.ppmtool.ProjectRepository;
+import me.carlosehr.ppmtool.repositories.ProjectRepository;
 import me.carlosehr.ppmtool.domain.Project;
 import me.carlosehr.ppmtool.exceptions.ProjectIdException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,4 +22,19 @@ public class ProjectService {
             throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase()+ "' already exists");
         }
     }
+
+
+    public Project findProjectByIdentifier(String projectId){
+
+        Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
+
+        if(project == null){
+            throw new ProjectIdException("Project ID '"+projectId+"' does not exist");
+
+        }
+
+
+        return project;
+    }
+
 }
