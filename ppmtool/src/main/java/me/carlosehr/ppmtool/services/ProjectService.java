@@ -1,5 +1,7 @@
 package me.carlosehr.ppmtool.services;
 
+import me.carlosehr.ppmtool.domain.Backlog;
+import me.carlosehr.ppmtool.repositories.BacklogRepository;
 import me.carlosehr.ppmtool.repositories.ProjectRepository;
 import me.carlosehr.ppmtool.domain.Project;
 import me.carlosehr.ppmtool.exceptions.ProjectIdException;
@@ -12,11 +14,25 @@ public class ProjectService {
     @Autowired
     private ProjectRepository projectRepository;
 
+    @Autowired
+    private BacklogRepository backlogRepository;
+
 
     public Project saveOrUpdateProject(Project project){
 
         try{
             project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+
+            if(project.getId() == null){
+                Backlog backlog = new Backlog();
+                project.setBacklog(backlog);
+                backlog.setProject(project);
+                backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+            }
+
+            if(project.getId() != null){
+                project.setBacklog(backlogRepository.findByProjectIdentifier(project.getProjectIdentifier().toUpperCase()));
+            }
             return projectRepository.save(project);
         }catch(Exception e){
             throw new ProjectIdException("Project ID '" + project.getProjectIdentifier().toUpperCase()+ "' already exists");
