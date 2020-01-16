@@ -82,11 +82,7 @@ class UpdateProject extends Component {
                 <div className="form-group">
                   <input
                     type="text"
-<<<<<<< HEAD
-                    className={classnames("form-control form-control-lg ", {
-=======
                     className={classnames("form-control form-control-lg", {
->>>>>>> branch27
                       "is-invalid": errors.projectName
                     })}
                     placeholder="Project Name"
@@ -111,11 +107,7 @@ class UpdateProject extends Component {
                 </div>
                 <div className="form-group">
                   <textarea
-<<<<<<< HEAD
-                    className={classnames("form-control form-control-lg ", {
-=======
                     className={classnames("form-control form-control-lg", {
->>>>>>> branch27
                       "is-invalid": errors.description
                     })}
                     placeholder="Project Description"
