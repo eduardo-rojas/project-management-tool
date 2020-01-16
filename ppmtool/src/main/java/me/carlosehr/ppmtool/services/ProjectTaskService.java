@@ -9,6 +9,7 @@ import me.carlosehr.ppmtool.repositories.ProjectRepository;
 import me.carlosehr.ppmtool.repositories.ProjectTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -75,5 +76,12 @@ public class ProjectTaskService {
                 throw new ProjectNotFoundException("'Project with ID: '" + id + "' does not exist'");
             }
         return projectTaskRepository.findByProjectIdentifierOrderByPriority(id);
+    }
+
+    public ProjectTask findPTByProjectSequence(String backlog_id, String pt_id){
+
+        //make sure to search on the right backlog
+
+        return projectTaskRepository.findByProjectSequence(pt_id);
     }
 }
