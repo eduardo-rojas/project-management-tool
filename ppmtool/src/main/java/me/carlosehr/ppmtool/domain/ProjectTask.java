@@ -20,31 +20,18 @@ public class ProjectTask {
     private String status;
     private Integer priority;
     private Date dueDate;
-    private Date create_at;
-    private Date update_at;
     //ManyToOne with Backlog
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REFRESH)
     @JoinColumn(name="backlog_id", updatable = false, nullable = false)
     @JsonIgnore
-    Backlog backlog;
-    @Column(updatable =  false)
+    private Backlog backlog;
+
+    @Column(updatable = false)
     private String projectIdentifier;
-
-    //
-
+    private Date create_At;
+    private Date update_At;
 
     public ProjectTask() {
-    }
-
-
-    @PrePersist
-    protected void onCreate(){
-        this.create_at = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate(){
-        this.update_at = new Date();
     }
 
     public Long getId() {
@@ -103,22 +90,6 @@ public class ProjectTask {
         this.dueDate = dueDate;
     }
 
-    public Date getCreate_at() {
-        return create_at;
-    }
-
-    public void setCreate_at(Date create_at) {
-        this.create_at = create_at;
-    }
-
-    public Date getUpdate_at() {
-        return update_at;
-    }
-
-    public void setUpdate_at(Date update_at) {
-        this.update_at = update_at;
-    }
-
     public String getProjectIdentifier() {
         return projectIdentifier;
     }
@@ -127,12 +98,38 @@ public class ProjectTask {
         this.projectIdentifier = projectIdentifier;
     }
 
+    public Date getCreate_At() {
+        return create_At;
+    }
+
+    public void setCreate_At(Date create_At) {
+        this.create_At = create_At;
+    }
+
+    public Date getUpdate_At() {
+        return update_At;
+    }
+
+    public void setUpdate_At(Date update_At) {
+        this.update_At = update_At;
+    }
+
     public Backlog getBacklog() {
         return backlog;
     }
 
     public void setBacklog(Backlog backlog) {
         this.backlog = backlog;
+    }
+
+    @PrePersist
+    protected void onCreate(){
+        this.create_At = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate(){
+        this.update_At = new Date();
     }
 
     @Override
@@ -145,9 +142,10 @@ public class ProjectTask {
                 ", status='" + status + '\'' +
                 ", priority=" + priority +
                 ", dueDate=" + dueDate +
-                ", create_at=" + create_at +
-                ", update_at=" + update_at +
+                ", backlog=" + backlog +
                 ", projectIdentifier='" + projectIdentifier + '\'' +
+                ", create_At=" + create_At +
+                ", update_At=" + update_At +
                 '}';
     }
 }
