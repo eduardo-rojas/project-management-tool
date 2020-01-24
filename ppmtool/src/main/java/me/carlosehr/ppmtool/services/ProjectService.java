@@ -2,6 +2,7 @@ package me.carlosehr.ppmtool.services;
 
 import me.carlosehr.ppmtool.domain.Backlog;
 import me.carlosehr.ppmtool.domain.User;
+import me.carlosehr.ppmtool.exceptions.ProjectNotFoundException;
 import me.carlosehr.ppmtool.repositories.BacklogRepository;
 import me.carlosehr.ppmtool.repositories.ProjectRepository;
 import me.carlosehr.ppmtool.domain.Project;
@@ -50,7 +51,7 @@ public class ProjectService {
     }
 
 
-    public Project findProjectByIdentifier(String projectId){
+    public Project findProjectByIdentifier(String projectId, String username){
 
         Project project = projectRepository.findByProjectIdentifier(projectId.toUpperCase());
 
@@ -59,22 +60,22 @@ public class ProjectService {
 
         }
 
+        if(!project.getProjectLeader().equals(username)){
+            throw new ProjectNotFoundException("Project not found in your account");
+        }
+
 
         return project;
     }
 
-    public Iterable<Project> findAllProjects(){
-        return projectRepository.findAll();
+    public Iterable<Project> findAllProjects(String username){
+        return projectRepository.findAllByProjectLeader(username);
     }
 
-    public void deleteProjectByIdentifier(String projectid){
-        Project project = projectRepository.findByProjectIdentifier(projectid.toUpperCase());
+    public void deleteProjectByIdentifier(String projectid, String username){
 
-        if(project == null){
-            throw new ProjectIdException("Cannot Delete Project with ID '" + projectid + "'. This project does not exist. ");
-        }
 
-        projectRepository.delete(project);
+        projectRepository.delete(findProjectByIdentifier(projectid, username));
     }
 
 
