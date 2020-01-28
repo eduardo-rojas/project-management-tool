@@ -19,6 +19,18 @@ class Register extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
+  componentDidMount() {
+    if (this.props.security.validToken) {
+      this.props.history.push("/dashboard");
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.errors) {
+      this.setState({ errors: nextProps.errors });
+    }
+  }
+
   onSubmit(e) {
     e.preventDefault();
     const newUser = {
@@ -33,12 +45,6 @@ class Register extends Component {
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      this.setState({ errors: nextProps.errors });
-    }
   }
 
   render() {
@@ -77,7 +83,7 @@ class Register extends Component {
                     value={this.state.username}
                     onChange={this.onChange}
                   />
-                  {errors.fullName && (
+                  {errors.username && (
                     <div className="invalid-feedback">{errors.username}</div>
                   )}
                 </div>
@@ -92,7 +98,7 @@ class Register extends Component {
                     value={this.state.password}
                     onChange={this.onChange}
                   />
-                  {errors.fullName && (
+                  {errors.password && (
                     <div className="invalid-feedback">{errors.password}</div>
                   )}
                 </div>
@@ -107,7 +113,7 @@ class Register extends Component {
                     value={this.state.confirmPassword}
                     onChange={this.onChange}
                   />
-                  {errors.fullName && (
+                  {errors.confirmPassword && (
                     <div className="invalid-feedback">
                       {errors.confirmPassword}
                     </div>
@@ -125,10 +131,12 @@ class Register extends Component {
 
 Register.propTypes = {
   createNewUser: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired
+  errors: PropTypes.object.isRequired,
+  security: PropTypes.object.isRequired
 };
 
 const mapStateToProps = state => ({
-  errors: state.errors
+  errors: state.errors,
+  security: state.security
 });
 export default connect(mapStateToProps, { createNewUser })(Register);

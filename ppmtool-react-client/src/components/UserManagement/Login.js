@@ -7,6 +7,7 @@ import { login } from "../../actions/securityActions";
 class Login extends Component {
   constructor() {
     super();
+
     this.state = {
       username: "",
       password: "",
@@ -14,6 +15,12 @@ class Login extends Component {
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    if (this.props.security.validToken) {
+      this.props.history.push("/dashboard");
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -32,6 +39,7 @@ class Login extends Component {
       username: this.state.username,
       password: this.state.password
     };
+
     this.props.login(LoginRequest);
   }
 
